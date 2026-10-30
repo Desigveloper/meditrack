@@ -1,1 +1,64 @@
 # MediTrack
+An AI-powered pharmacy stock and prescription assistant. MediTrack helps community pharmacies manage medicine inventory, avoid stock outs and expiry losses, and give patients reliable information about medicine availability — all through a web dashboard and a mobile app.
+
+Status: In active development. This project is being built step by step as a documented learning journey; every phase below records what was built and why.
+
+## The Problem
+Community pharmacies commonly manage stock with notebooks or spreadsheets. The consequences:
+- Expiry losses — medicines expire on the shelf unnoticed, destroying their value.
+- Stockouts — patients arrive and find essential medicines unavailable, with no way to locate the nearest pharmacy that has them.
+- No data — pharmacy owners cannot see which products are profitable or which suppliers to reorder from.
+
+MediTrack addresses all three with a simple inventory model, proactive alerts, and an AI guidance layer with safety guardrails.
+
+## Features
+- Medicine stock intake with quantity, pricing, expiry dates, and suppliers
+- Automatic low-stock and expiry alerts
+- Medicine availability search
+- AI-powered symptom-to-medicine-category guidance with safety disclaimers (never a diagnosis)
+- Web dashboard for pharmacy owners
+- Mobile app for stock management on the move
+
+## Tech Stack
+Layer               | Technology            | Purpose
+- Frontend (web)    | React, JavaScript     | Pharmacy dashboard UI
+- Frontend (mobile) | React Native          | Mobile stock management app
+- Backend           | Python, FastAPI       | REST API for stock and users
+- Database          | SQLite                | Persistent storage of stock records
+- AI                | LLM API               |Symptom guidance and stock insights
+
+## Architecture
+
+flowchart LR
+    A[React Web Dashboard]      -->     D[FastAPI Backend]
+    B[React Native Mobile App]  -->     D[FastAPI Backend]
+    D[FastAPI Backend]          -->     E[(SQLite Database)]
+    D[FastAPI Backend]          -->     F[AI Guidance Layer]
+
+## Project Structure
+This section grows as the project grows. Planned layout:
+
+meditrack/
+├── README.md          # Project documentation (this file)
+├── backend/           # Python FastAPI application (Phase 2)
+├── web/               # React web dashboard (Phase 3)
+├── ai/                # AI guidance service (Phase 4)
+└── mobile/            # React Native app (Phase 5)
+
+## Getting Started
+Setup instructions will be added in Phase 2 once the backend exists. The project currently contains documentation only.
+
+## Development Progress Log
+Phase  | Scope                                | Status       | Key Learning
+1.     | Repository setup and documentation   | Complete     | Git, commits, README conventions
+2.     | Python backend API                   | Planned      |
+3.     | React web dashboard                  | Planned      |
+4.     | AI guidance layer                    | Planned      |
+5.     | React Native mobile app              | Planned      |
+6.     | Assembly and polish                  | Planned      |
+
+## Safety and Ethics
+MediTrack provides over-the-counter guidance only and never diagnoses. All AI responses carry a disclaimer directing users to a licensed pharmacist or medical professional for prescription decisions.
+
+## License
+MIT (to be finalized in Phase 6).
