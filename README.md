@@ -28,7 +28,6 @@ Layer               | Technology            | Purpose
 - AI                | LLM API               |Symptom guidance and stock insights
 
 ## Architecture
-
 flowchart LR
     A[React Web Dashboard]      -->     D[FastAPI Backend]
     B[React Native Mobile App]  -->     D[FastAPI Backend]
