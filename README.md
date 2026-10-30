@@ -20,26 +20,30 @@ MediTrack addresses all three with a simple inventory model, proactive alerts, a
 - Mobile app for stock management on the move
 
 ## Tech Stack
- Layer              | Technology                               | Purpose
-- Frontend (web)    | React, JavaScript                        | Pharmacy dashboard UI
-- Frontend (mobile) | React Native                             | Mobile stock management app
-- Backend           | Node.js/Express API, Firebase Auth       | REST API for stock and users
-- Database          | SQLite                                   | Persistent storage of stock records
-- AI                | LLM API                                  |Symptom guidance and stock insights
+ Layer              | Technology                        | Purpose
+- Frontend (web)    | React, JavaScript                 | Pharmacy dashboard UI
+- Frontend (mobile) | React Native                      | Mobile stock management app
+- Backend           | Node.js/Express API               | REST API for stock and users
+- Authentication    | Firebase Authentication           | Sign-in and identity for staff and patients
+- Database          | Google Firestore                  | NoSQL document storage of stock records
+- AI                | Python Microservices, LLM API     | Symptom guidance and stock insights
 
 ## Architecture
 flowchart LR
-    A[React Web Dashboard]           -->     D[Node.js/Express Backend]
-    B[React Native Mobile App]       -->     D[Node.js/Express Backend]
-    D[Node.js/Express Backend]       -->     E[(SQLite Database)]
-    D[Node.js/Express Backend]       -->     F[AI Guidance Layer]
+    A[React Web Dashboard]                           -->     D[Express Backend]
+    B[React Native Mobile App]                       -->     D[Express Backend]
+    A[React Web Dashboard]                           -->     G[Firebase Authentication]
+    B[React Native Mobile App]                       -->     G[Firebase Authentication]
+    G[Firebase Authentication]   issues ID tokens    -->     G[Firebase Authentication]
+    D[Node.js/Express Backend]                       -->     E[(Firestore)]
+    D[Node.js/Express Backend]                       -->     F[Python AI Services]
 
 ## Project Structure
 This section grows as the project grows. Planned layout:
 
 meditrack/
 ├── README.md          # Project documentation (this file)
-├── backend/           # Node.js/Express application (Phase 2)
+├── backend/           # Node.js/Express API application (Phase 2)
 ├── web/               # React web dashboard (Phase 3)
 ├── ai/                # AI guidance service (Phase 4)
 └── mobile/            # React Native app (Phase 5)
@@ -48,13 +52,13 @@ meditrack/
 Setup instructions will be added in Phase 2 once the backend exists. The project currently contains documentation only.
 
 ## Development Progress Log
-Phase  | Scope                                | Status       | Key Learning
-1.     | Repository setup and documentation   | Complete     | Git, commits, README conventions
-2.     | Node.js/Express backend API          | Planned      |
-3.     | React web dashboard                  | Planned      |
-4.     | AI guidance layer                    | Planned      |
-5.     | React Native mobile app              | Planned      |
-6.     | Assembly and polish                  | Planned      |
+Phase  | Scope                                             | Status     | Key Learning
+1.     | Repository setup and documentation                | Complete   | Git, commits, README
+2.     | Node.js/Express backend API with Firebase Auth.   | Planned    |
+3.     | React web dashboard                               | Planned    |
+4.     | Python AI guidance microservices                  | Planned    |
+5.     | React Native mobile app                           | Planned    |
+6.     | Assembly and polish                               | Planned    |
 
 ## Safety and Ethics
 MediTrack provides over-the-counter guidance only and never diagnoses. All AI responses carry a disclaimer directing users to a licensed pharmacist or medical professional for prescription decisions.
