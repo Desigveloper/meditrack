@@ -20,26 +20,26 @@ MediTrack addresses all three with a simple inventory model, proactive alerts, a
 - Mobile app for stock management on the move
 
 ## Tech Stack
-Layer               | Technology            | Purpose
-- Frontend (web)    | React, JavaScript     | Pharmacy dashboard UI
-- Frontend (mobile) | React Native          | Mobile stock management app
-- Backend           | Python, FastAPI       | REST API for stock and users
-- Database          | SQLite                | Persistent storage of stock records
-- AI                | LLM API               |Symptom guidance and stock insights
+ Layer              | Technology                               | Purpose
+- Frontend (web)    | React, JavaScript                        | Pharmacy dashboard UI
+- Frontend (mobile) | React Native                             | Mobile stock management app
+- Backend           | Node.js/Express API, Firebase Auth       | REST API for stock and users
+- Database          | SQLite                                   | Persistent storage of stock records
+- AI                | LLM API                                  |Symptom guidance and stock insights
 
 ## Architecture
 flowchart LR
-    A[React Web Dashboard]      -->     D[FastAPI Backend]
-    B[React Native Mobile App]  -->     D[FastAPI Backend]
-    D[FastAPI Backend]          -->     E[(SQLite Database)]
-    D[FastAPI Backend]          -->     F[AI Guidance Layer]
+    A[React Web Dashboard]           -->     D[Node.js/Express Backend]
+    B[React Native Mobile App]       -->     D[Node.js/Express Backend]
+    D[Node.js/Express Backend]       -->     E[(SQLite Database)]
+    D[Node.js/Express Backend]       -->     F[AI Guidance Layer]
 
 ## Project Structure
 This section grows as the project grows. Planned layout:
 
 meditrack/
 ├── README.md          # Project documentation (this file)
-├── backend/           # Python FastAPI application (Phase 2)
+├── backend/           # Node.js/Express application (Phase 2)
 ├── web/               # React web dashboard (Phase 3)
 ├── ai/                # AI guidance service (Phase 4)
 └── mobile/            # React Native app (Phase 5)
@@ -50,7 +50,7 @@ Setup instructions will be added in Phase 2 once the backend exists. The project
 ## Development Progress Log
 Phase  | Scope                                | Status       | Key Learning
 1.     | Repository setup and documentation   | Complete     | Git, commits, README conventions
-2.     | Python backend API                   | Planned      |
+2.     | Node.js/Express backend API          | Planned      |
 3.     | React web dashboard                  | Planned      |
 4.     | AI guidance layer                    | Planned      |
 5.     | React Native mobile app              | Planned      |
