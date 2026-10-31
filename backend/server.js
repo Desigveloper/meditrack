@@ -11,5 +11,5 @@ app.get("/health", (request, response) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`MediTrack listening on port ${PORT}`);
+    console.log(`MediTrack API listening on port ${PORT}`);
 });
