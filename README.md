@@ -49,7 +49,7 @@ meditrack/
 └── mobile/            # React Native app (Phase 5)
 
 ## Getting Started
-Setup instructions will be added in Phase 2 once the backend exists. The project currently contains documentation only.
+A minimal express server now exists at backend/. Setup instructions will be added in Phase 2 once the backend exists.
 
 ## Development Progress Log
 Phase  | Scope                                             | Status     | Key Learning
