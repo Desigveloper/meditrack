@@ -14,6 +14,10 @@ app.post("/stock", (request, response) => {
         return response.status(400).json({error: "name and quantity are required"});
     }
 
+    if(!Number.isInteger(item.quantity) || item.quantity <= 0) {
+        return response.status(400).json({error: "quantity should be a positive whole number"});
+    }
+
     const newItem = {
         id: stock.length + 1,
         ...item,
