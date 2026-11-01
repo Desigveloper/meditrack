@@ -52,17 +52,22 @@ meditrack/
 A minimal express server now exists in backend/. Setup instructions will be added at the end of  Phase 2.
 
 ## Development Progress Log
-Phase  | Scope                                             | Status         | Key Learning
-1.     | Repository setup and documentation                | Complete       | Git, commits, README
-       |                                                   |                |
-2.     | Node.js/Express backend API with                  |                | Express routing,     
-       | Firebase Authentication                           | In Progress    | request/response 
-       |                                                   |                | cycle, status codes
-       |                                                   |                |
-3.     | React web dashboard                               | Planned        |
-4.     | Python AI guidance microservices                  | Planned        |
-5.     | React Native mobile app                           | Planned        |
-6.     | Assembly and polish                               | Planned        |
+Phase  | Scope                                       | Status         | Key Learning
+1.     | Repository setup and documentation          | Complete       | Git, commits, README
+       |                                             |                |
+2.     | Node.js/Express backend API with            |                | Express routing,     
+       | Firebase Authentication                     | In Progress    | request/response 
+       |                                             |                | cycle, status codes,
+       |                                             |                | Firestore persistence,
+       |                                             |                | async/await, ES modules,
+       |                                             |                | secret management via 
+       |                                             |                | environment variable,
+       |                                             |                | 
+       |                                             |                |
+3.     | React web dashboard                         | Planned        |
+4.     | Python AI guidance microservices            | Planned        |
+5.     | React Native mobile app                     | Planned        |
+6.     | Assembly and polish                         | Planned        |
 
 ## Safety and Ethics
 MediTrack provides over-the-counter guidance only and never diagnoses. All AI responses carry a disclaimer directing users to a licensed pharmacist or medical professional for prescription decisions.
