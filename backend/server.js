@@ -23,7 +23,7 @@ app.post("/stock", async (request, response) => {
     try {  
         const newItem = {...item, updatedAt: new Date().toISOString()};
         const doc = await db.collection("stock").add(newItem);
-        response.status(201).json({id: doc.is, ...newItem});
+        response.status(201).json({id: doc.id, ...newItem});
     } catch (error) {
         console.error("Failed to save stock item:", error);
         response.status(500).json({error: "internal server error"});

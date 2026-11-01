@@ -1,22 +1,21 @@
-// db.js — Firestore connection module (ESM)
+import { initializeApp, cert } from 'firebase-admin/app';
+import { getFirestore } from 'firebase-admin/firestore';
 
-/** Shared Firebase Admin and Firestore connection for backend modules. */
-import admin from "firebase-admin";
+const encodedKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
 
-// Decode the base64-encoded service-account JSON from the environment.
+if (!encodedKey) {
+    throw new Error("FIREBASE_SERVICE_ACCOUNT_KEY environment variable is not set.");
+}
+
 const serviceAccount = JSON.parse(
-    Buffer.from(process.env.FIREBASE_SERVICE_ACCOUNT_KEY, "base64")
-    .toString("utf-8")
+    Buffer.from(encodedKey, 'base64').toString('utf-8')
 );
 
-// Initialize the Admin SDK with the service-account credentials.
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+const firebaseApp = initializeApp({
+    credential: cert(serviceAccount)
 });
 
-/** Firestore database client. */
-const db = admin.firestore();
+const db = getFirestore(firebaseApp);
 
-// Export the database client and Admin SDK for use by backend modules.
 export default db;
-export { admin };
+export { firebaseApp };
