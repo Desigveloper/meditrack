@@ -30,8 +30,19 @@ app.post("/stock", async (request, response) => {
     }
 });
 
-app.get("/stock", (request, response) => {
-    response.json(stock);
+app.get("/stock", async(request, response) => {
+    try {
+        const snapshot = await db.collection("stock").get();
+        const stock = [];
+        snapshot.forEach((doc) => {
+            stock.push({id: doc.id, ...doc.data()});
+        });
+
+        response.json(stock);
+    } catch (error) {
+        console.error("Failed to load stock", error);
+        response.status(500).json({error: "internal server error"});
+    }
 });
 
 const PORT = process.env.PORT || 4000;
