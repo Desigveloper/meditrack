@@ -62,6 +62,9 @@ Phase  | Scope                                       | Status         | Key Lear
        |                                             |                | async/await, ES modules,
        |                                             |                | secret management via 
        |                                             |                | environment variable,
+       |                                             |                | Firebase Authentication,
+       |                                             |                | ID Token verification 
+       |                                             |                | middleware, status code 401,
        |                                             |                | 
        |                                             |                |
 3.     | React web dashboard                         | Planned        |
