@@ -1,9 +1,13 @@
 import "dotenv/config";
 import express from "express";
 import db from "./db.js";
+import { requireAuth } from "./middleware/auth.js";
+
+
 
 const app = express();
 app.use(express.json());
+app.use("/stock", requireAuth);
 
 app.get("/health", (request, response) => {
     response.json({status: "ok"});
