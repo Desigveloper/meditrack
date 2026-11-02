@@ -29,7 +29,7 @@ app.post("/stock", async (request, response) => {
     }
 
     if (sellingPrice <= costPrice ) {
-        return response.status(400).json({error: "Wrong pricing. cost price greater than selling price."});
+        return response.status(400).json({error: "Invalid pricing. cost price greater than selling price."});
     }
 
     try {  
