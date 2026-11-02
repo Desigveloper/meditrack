@@ -24,6 +24,14 @@ app.post("/stock", async (request, response) => {
         return response.status(400).json({error: "quantity should be a positive whole number"});
     }
 
+    if (!Number(item.costPrice) || !Number(item.sellingPrice)) {
+        return response.status(400).json({error: "selling price and cost price are required"});
+    }
+
+    if (sellingPrice <= costPrice ) {
+        return response.status(400).json({error: "Wrong pricing. cost price greater than selling price."});
+    }
+
     try {  
         const newItem = {...item, updatedAt: new Date().toISOString()};
         const doc = await db.collection("stock").add(newItem);
