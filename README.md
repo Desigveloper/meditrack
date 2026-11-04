@@ -65,7 +65,9 @@ Phase  | Scope                                       | Status         | Key Lear
        |                                             |                | Firebase Authentication,
        |                                             |                | ID Token verification 
        |                                             |                | middleware, status code 401,
-       |                                             |                | 
+       |                                             |                | user registration, ownership
+       |                                             |                | ownership-base authorization
+       |                                             |                | schema migration, 
        |                                             |                |
 3.     | React web dashboard                         | Planned        |
 4.     | Python AI guidance microservices            | Planned        |
