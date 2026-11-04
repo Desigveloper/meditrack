@@ -2,6 +2,8 @@ import "dotenv/config";
 import express from "express";
 import { db }from "./db.js";
 import { requireAuth } from "./middleware/auth.js";
+import { getAuth } from "firebase-admin/auth";
+import { firebaseApp } from "./db.js";
 
 /**
  * MediTrack inventory API.
@@ -13,8 +15,40 @@ const app = express();
 app.use(express.json());
 app.use("/stock", requireAuth);
 
+const auth = getAuth(firebaseApp);
+
+app.post("/auth/register", async(request, response) => {
+    const {email, password, displayName} = request.body;
+
+    if(!email || !password) {
+        return response.status(400).json({error: "email and password are required"});
+    }
+
+    try {
+        const userRecord = await auth.createUser({
+            email,
+            password,
+            displayName: displayName || email
+        });
+        response.status(201).json({uid: userRecord.uid, email: userRecord.email});
+    } catch (error) {
+        if(error.code === "auth/email-already-exists") {
+            return response.status(409).json({error: "an account with email already exists"});
+        }
+
+        if (error.code === "auth/invalid-email") {
+            return response.status(400).json({error: "invalid email or password " +
+                "(minimum 6 characters)"});
+        }
+
+        console.error("Registration failed:", error.code);
+        request.status(500).json({error: "internal server error"});
+    }
+});
+
+
 /** Check whether the API is running. */
-app.get("/health", (_request, response) => {
+app.get("/health", (request, response) => {
     response.json({ status: "ok" });
 });
 
@@ -48,7 +82,12 @@ app.post("/stock", async (request, response) => {
     }
 
     try {
-        const newItem = { ...item, updatedAt: new Date().toISOString() };
+        const newItem = { 
+            ...item,
+            ownerId: request.user.uid, 
+            updatedAt: new Date().toISOString()
+        };
+
         const doc = await db.collection("stock").add(newItem);
         response.status(201).json({ id: doc.id, ...newItem });
     } catch (error) {
@@ -58,9 +97,13 @@ app.post("/stock", async (request, response) => {
 });
 
 /** Return all stock items. */
-app.get("/stock", async (_request, response) => {
+app.get("/stock", async (request, response) => {
     try {
-        const snapshot = await db.collection("stock").get();
+        const snapshot = await db
+        .collection("stock")
+        .where("ownerId", "==", request.user.uid)
+        .get();
+        
         const stock = [];
         snapshot.forEach((doc) => {
             stock.push({ id: doc.id, ...doc.data() });
