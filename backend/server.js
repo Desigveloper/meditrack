@@ -99,6 +99,73 @@ app.post("/stock", async (request, response) => {
         response.status(201).json({ id: doc.id, ...newItem });
     } catch (error) {
         console.error("Failed to save stock item:", { item, error });
+        response.status(500).json({ error: "internal server error" });
+    }
+});
+
+/**
+ * Update an existing stock item owned by the authenticated user.
+ * Expects the stock fields to update in the request body; ownerId is ignored.
+ * The merged item must have a name, positive integer quantity, positive cost
+ * and selling prices, and a selling price greater than the cost price.
+ * Returns 404 if the item does not exist, 403 if it belongs to another user,
+ * 400 for invalid stock data, or 500 if the update fails.
+ */
+app.put("/stock/:id", async (request, response) => {
+    const { id } = request.params;
+    const updatedData = request.body;
+    // Prevent changing the ownerId
+        delete updatedData.ownerId;
+    delete updatedData.ownerId; // Prevent changing the ownerId
+
+
+    try {
+        const docRef = db.collection("stock").doc(id);
+        const doc = await docRef.get();
+
+        if (!doc.exists) {
+            return response.status(404).json({ error: "Stock item not found" });
+        }
+
+        const record = doc.data();
+        if (record.ownerId !== request.user.uid) {
+            return response.status(403).json({ error: "Forbidden: you do not have permission to" +
+                " modify this stock item" });
+        }
+
+        const updatedItem = {
+            ...record,
+            ...updatedData,
+            updatedAt: new Date().toISOString()
+        };
+
+        if (!updatedItem.name || !updatedItem.quantity) {
+            return response.status(400).json({ error: "name and quantity are required" });
+        }
+
+        if (!Number.isInteger(updatedItem.quantity) || updatedItem.quantity <= 0) {
+            return response.status(400).json({ error: "quantity should be a positive whole number" });
+        }
+
+        if (
+            typeof updatedItem.costPrice !== "number" ||
+            typeof updatedItem.sellingPrice !== "number" ||
+            updatedItem.costPrice <= 0 ||
+            updatedItem.sellingPrice <= 0
+        ) {
+            return response.status(400).json({ error: "selling price and cost price must" +
+                " be positive numbers" });
+        }
+
+        if (updatedItem.sellingPrice <= updatedItem.costPrice) {
+            return response.status(400).json({ error: "selling price must be greater" +
+                " than cost price." });
+        }
+        await docRef.update(updatedItem);
+        response.json({ id, ...updatedItem });
+    } catch (error) {
+        console.error("Failed to update stock item:", error);
+        response.status(500).json({ error: "internal server error" });
     }
 });
 
