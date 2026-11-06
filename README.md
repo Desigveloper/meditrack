@@ -18,6 +18,7 @@ MediTrack addresses all three with a simple inventory model, proactive alerts, a
 - AI-powered symptom-to-medicine-category guidance with safety disclaimers (never a diagnosis)
 - Web dashboard for pharmacy owners
 - Mobile app for stock management on the move
+- REST API with Firebase authentication, per-user inventory isolation, and business-rule validation
 
 ## Tech Stack
  Layer              | Technology                        | Purpose
@@ -48,31 +49,50 @@ meditrack/
 ├── ai/                # AI guidance service (Phase 4)
 └── mobile/            # React Native app (Phase 5)
 
-## Getting Started
-A minimal express server now exists in backend/. Setup instructions will be added at the end of  Phase 2.
+# Getting Started
+## Backend (Phase 2)
+Express server exists in backend/. Setup instructions below.
 
-## Development Progress Log
-Phase  | Scope                                       | Status         | Key Learning
-1.     | Repository setup and documentation          | Complete       | Git, commits, README
-       |                                             |                |
-2.     | Node.js/Express backend API with            |                | Express routing,     
-       | Firebase Authentication                     | In Progress    | request/response 
-       |                                             |                | cycle, status codes,
-       |                                             |                | Firestore persistence,
-       |                                             |                | async/await, ES modules,
-       |                                             |                | secret management via 
-       |                                             |                | environment variable,
-       |                                             |                | Firebase Authentication,
-       |                                             |                | ID Token verification 
-       |                                             |                | middleware, status code 401,
-       |                                             |                | user registration, ownership
-       |                                             |                | ownership-base authorization
-       |                                             |                | schema migration, 
-       |                                             |                |
-3.     | React web dashboard                         | Planned        |
-4.     | Python AI guidance microservices            | Planned        |
-5.     | React Native mobile app                     | Planned        |
-6.     | Assembly and polish                         | Planned        |
+Prerequisite: a Firebase project with Firestore and Email/Password authentication enabled, and a Google service account private key.
+1. Copy backend/.env.example to backend/.env and fill in FIREBASE_SERVICE_ACCOUNT_KEY with the base64 encoding of your service account key (run node scripts/encode-service-account.js from backend/ to generate it).
+2. From backend/, install dependencies: npm install.
+3. Start the server: node server.js.
+4. Verify: GET http://localhost:4000/health returns {"status":"ok"}.
+
+The web dashboard (Phase 3) will be added to this section as it takes shape.
+
+# Development Progress Log
+Phase  | Scope                                     | Status       | Key Learning
+--------------------------------------------------------------------------------------------------
+1.     | Repository setup and documentation        | Complete     | Git, commits, README
+       |                                           |              |
+--------------------------------------------------------------------------------------------------
+2.     | Node.js/Express backend API with          |              | Express routing,     
+       | Firebase Authentication                   | Complete     | request/response 
+       |                                           |              | cycle, status codes,
+       |                                           |              | Firestore persistence,
+       |                                           |              | async/await, ES modules,
+       |                                           |              | secret management via 
+       |                                           |              | environment variable,
+       |                                           |              | Firebase Authentication,
+       |                                           |              | ID Token verification 
+       |                                           |              | middleware, user registration,
+       |                                           |              | user registration, ownership
+       |                                           |              | ownership-based authorization,
+       |                                           |              | schema migration, route 
+       |                                           |              | parameters, status codes
+       |                                           |              | 401/403/400/500/404/409,
+       |                                           |              | validation modules & separation
+       |                                           |              | of concern
+---------------------------------------------------------------------------------------------------
+3.     | React web dashboard                       | Planned      |
+---------------------------------------------------------------------------------------------------
+4.     | Python AI guidance microservices          | Planned      |
+---------------------------------------------------------------------------------------------------
+5.     | React Native mobile app                   | Planned      |
+---------------------------------------------------------------------------------------------------
+6.     | Assembly and polish                       | Planned      |
+---------------------------------------------------------------------------------------------------
 
 ## Safety and Ethics
 MediTrack provides over-the-counter guidance only and never diagnoses. All AI responses carry a disclaimer directing users to a licensed pharmacist or medical professional for prescription decisions.
