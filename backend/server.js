@@ -4,6 +4,7 @@ import { db }from "./db.js";
 import { requireAuth } from "./middleware/auth.js";
 import { getAuth } from "firebase-admin/auth";
 import { firebaseApp } from "./db.js";
+import {validateStockItem} from "./validators/stock.js";
 
 /**
  * MediTrack inventory API.
@@ -62,30 +63,16 @@ app.post("/auth/register", async(request, response) => {
  */
 app.post("/stock", async (request, response) => {
     const item = request.body;
-
+    delete item.ownerId; // Prevent changing the ownerId
+    const validationError = validateStockItem(item);
+    
+    
     if (!request.user || !request.user.uid) {
         return response.status(401).json({ error: "Unauthorized: user not authenticated" });
     }
-
-    if (!item.name || !item.quantity) {
-        return response.status(400).json({ error: "name and quantity are required" });
-    }
-
-    if (!Number.isInteger(item.quantity) || item.quantity <= 0) {
-        return response.status(400).json({ error: "quantity should be a positive whole number" });
-    }
-
-    if (
-        typeof item.costPrice !== "number" ||
-        typeof item.sellingPrice !== "number" ||
-        item.costPrice <= 0 ||
-        item.sellingPrice <= 0
-    ) {
-        return response.status(400).json({ error: "selling price and cost price must be positive numbers" });
-    }
-
-    if (item.sellingPrice <= item.costPrice) {
-        return response.status(400).json({ error: "selling price must be greater than cost price." });
+    
+    if (validationError) {
+        return response.status(400).json({ error: validationError });
     }
 
     try {
@@ -114,9 +101,9 @@ app.post("/stock", async (request, response) => {
 app.put("/stock/:id", async (request, response) => {
     const { id } = request.params;
     const updatedData = request.body;
+
     // Prevent changing the ownerId
-        delete updatedData.ownerId;
-    delete updatedData.ownerId; // Prevent changing the ownerId
+    delete updatedData.ownerId;
 
 
     try {
@@ -139,28 +126,11 @@ app.put("/stock/:id", async (request, response) => {
             updatedAt: new Date().toISOString()
         };
 
-        if (!updatedItem.name || !updatedItem.quantity) {
-            return response.status(400).json({ error: "name and quantity are required" });
+        const validationError = validateStockItem(updatedItem);
+        if (validationError) {
+            return response.status(400).json({ error: validationError });
         }
 
-        if (!Number.isInteger(updatedItem.quantity) || updatedItem.quantity <= 0) {
-            return response.status(400).json({ error: "quantity should be a positive whole number" });
-        }
-
-        if (
-            typeof updatedItem.costPrice !== "number" ||
-            typeof updatedItem.sellingPrice !== "number" ||
-            updatedItem.costPrice <= 0 ||
-            updatedItem.sellingPrice <= 0
-        ) {
-            return response.status(400).json({ error: "selling price and cost price must" +
-                " be positive numbers" });
-        }
-
-        if (updatedItem.sellingPrice <= updatedItem.costPrice) {
-            return response.status(400).json({ error: "selling price must be greater" +
-                " than cost price." });
-        }
         await docRef.update(updatedItem);
         response.json({ id, ...updatedItem });
     } catch (error) {
@@ -218,6 +188,13 @@ app.get("/stock", async (request, response) => {
 // The PORT environment variable can be set to specify the server's listening port.
 // If not set, the server will default to port 4000.
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
+const server = app.listen(PORT);
+
+server.on("listening", () => {
     console.log(`MediTrack API listening on port ${PORT}`);
+});
+
+server.on("error", (error) => {
+    console.error(`MediTrack API failed to listen on port ${PORT}:`, error);
+    process.exitCode = 1;
 });
