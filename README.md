@@ -84,7 +84,11 @@ ________________________________________________________________________________
        |                                           |              | validation modules & separation
        |                                           |              | of concerns
 ___________________________________________________________________________________________________
-3.     | React web dashboard                       | Planned      |
+3.     | React web dashboard                       | In progress  | Vite Scaffolding, components,
+       |                                           |              | JSX, useState, controlled input,
+       |                                           |              | props, useEffect & subscription,
+       |                                           |              | Firebase session persistence, 
+       |                                           |              | git branch workflow, 
 ___________________________________________________________________________________________________
 4.     | Python AI guidance microservices          | Planned      |
 ____________________________________________________________________________________________________
