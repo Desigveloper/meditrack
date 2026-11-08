@@ -14,9 +14,6 @@ function SignIn({onSignedIn}) {
 
         try {
             const credentials = await signInWithEmailAndPassword(auth, email, password);
-            const token = await credentials.user.getIdToken();
-            localStorage.setItem("meditrack-token", token);
-            onSignedIn();
         } catch (signInError) {
             setError("Sign-in failed. Please check your email and password");
         }
