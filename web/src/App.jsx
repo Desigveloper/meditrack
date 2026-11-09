@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./firebase.js";
 import SignIn from "./components/SignIn.jsx";
+import Inventory from "./components/Inventory.jsx";
 
 function App() {
   const [user, setUser] = useState(false);
@@ -26,8 +27,9 @@ function App() {
   return (
     <main>
       <h1>Meditrack Inventory</h1>
-      <p>Signed in as {user.email}. The live dashboard arrives in our next lesson</p>
+      { <Inventory user={ user } />  /* live dashboard */}
       <button onClick={() => signOut(auth)}>Sign out</button>
+      <p>Signed in as {user.email}. </p>
     </main>
   );
 }
