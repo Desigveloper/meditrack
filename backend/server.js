@@ -5,18 +5,21 @@ import { requireAuth } from "./middleware/auth.js";
 import { getAuth } from "firebase-admin/auth";
 import { firebaseApp } from "./db.js";
 import {validateStockItem} from "./validators/stock.js";
+import cors from "cors";
+
 
 /**
  * MediTrack inventory API.
  * Provides a public health check and authenticated stock management endpoints.
  * Requires the database and authentication configuration supplied by the project.
  */
-
 const app = express();
 app.use(express.json());
-app.use("/stock", requireAuth);
+app.use(cors({origin: "http://localhost:5173"})); // Allow requests from the frontend
 
 const auth = getAuth(firebaseApp);
+
+app.use("/stock", requireAuth);
 
 /**
  * Register a new user.
@@ -24,7 +27,7 @@ const auth = getAuth(firebaseApp);
  * Returns: { uid, email } on success.
  *   - uid: The unique user ID assigned by Firebase.
  *   - email: The registered email address.
- */
+*/
 app.post("/auth/register", async(request, response) => {
     const {email, password, displayName} = request.body;
     if(!email || !password) {
