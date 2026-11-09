@@ -40,26 +40,42 @@ flowchart LR
     D[Node.js/Express Backend]                       -->     F[Python AI Services]
 
 ## Project Structure
-This section grows as the project grows. Planned layout:
 
-meditrack/
-├── README.md          # Project documentation (this file)
-├── backend/           # Node.js/Express API application (Phase 2)
-├── web/               # React web dashboard (Phase 3)
-├── ai/                # AI guidance service (Phase 4)
-└── mobile/            # React Native app (Phase 5)
+The current files and a recommended next-step layout are documented in
+[docs/PROJECT_STRUCTURE.md](./docs/PROJECT_STRUCTURE.md).
 
-# Getting Started
-## Backend (Phase 2)
-Express server exists in backend/. Setup instructions below.
+## Getting Started
 
-Prerequisite: a Firebase project with Firestore and Email/Password authentication enabled, and a Google service account private key.
-1. Copy backend/.env.example to backend/.env and fill in FIREBASE_SERVICE_ACCOUNT_KEY with the base64 encoding of your service account key (run node scripts/encode-service-account.js from backend/ to generate it).
-2. From backend/, install dependencies: npm install.
-3. Start the server: node server.js.
-4. Verify: GET http://localhost:4000/health returns {"status":"ok"}.
+### Prerequisites
 
-The web dashboard (Phase 3) will be added to this section as it takes shape.
+- Node.js and npm
+- A Firebase project with Email/Password Authentication and Firestore enabled
+- A Firebase Admin service-account key for the backend
+
+### Backend
+
+The backend reads `FIREBASE_SERVICE_ACCOUNT_KEY`, a base64-encoded service-account
+JSON value, when it starts. Keep this credential private and do not commit it.
+
+1. In `backend/`, install dependencies with `npm install`.
+2. Set `FIREBASE_SERVICE_ACCOUNT_KEY` in your environment or a local `backend/.env`
+   file. To encode a local `serviceAccountKey.json`, run
+   `node scripts/encode-key.js` from `backend/`; the script prints the encoded
+   credential, so handle its output as a secret.
+3. Start the API from `backend/` with `node server.js`. It listens on port 4000
+   by default; set `PORT` to use another port.
+
+The API currently has no `/health` endpoint. The authenticated `GET /stock` route
+is the available read endpoint and expects a Firebase ID token in a Bearer
+authorization header.
+
+### Web dashboard
+
+1. In `web/`, install dependencies with `npm install`.
+2. Start the Vite development server with `npm run dev`. By default, the
+   dashboard is served at `http://localhost:5173`.
+3. Use `npm run lint` and `npm run build` in `web/` to lint and build the
+   frontend.
 
 # Development Progress Log
 Phase  | Scope                                     | Status       | Key Learning

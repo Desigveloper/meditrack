@@ -1,17 +1,24 @@
 import { useState, useEffect } from "react";
 
+// Base URL for the inventory service.
 const API_URL = "http://localhost:4000";
 
+/**
+ * Fetches and displays the authenticated user's inventory.
+ * @param {{ user: { getIdToken: () => Promise<string> } }} props
+ */
 function Inventory({ user }) {
     const [stock, setStock] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        // Avoid updating state if this request finishes after unmounting.
         let cancelled = false;
 
         async function loadStock() {
             try {
+                // Include the user's ID token to authorize the stock request.
                 const token = await user.getIdToken();
                 const response = await fetch(`${API_URL}/stock`, {
                     headers: { Authorization: `Bearer ${token}`}
@@ -23,6 +30,7 @@ function Inventory({ user }) {
 
                 const data = await response.json();
 
+                // Apply the response only while this effect is still active.
                 if(!cancelled) {
                     setStock(data);
                 }
@@ -39,6 +47,7 @@ function Inventory({ user }) {
         }
         loadStock();
 
+        // Mark this effect inactive when it is cleaned up.
         return () => {
             cancelled = true;
         };
@@ -47,6 +56,7 @@ function Inventory({ user }) {
     if (loading) return <p>Loading Inventory</p>
     if (error) return <p>{error}</p>
     
+    // Show each inventory item with its quantity, price, and expiry date.
     return (
       <table>
         <thead>

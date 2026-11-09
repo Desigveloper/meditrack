@@ -3,13 +3,20 @@ import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase.js";
 
+/**
+ * Displays the Meditrack email-and-password sign-in form.
+ * @param {{ onSignedIn?: (credentials: import("firebase/auth").UserCredential) => void }} props
+ *        Optional callback invoked after successful authentication.
+ */
 function SignIn({onSignedIn}) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
 
+    /** Authenticates the submitted credentials and reports failures to the user. */
     async function handleSubmit(event) {
         event.preventDefault();
+        // Reset the previous error before submitting new credentials.
         setError(null);
 
         try {
