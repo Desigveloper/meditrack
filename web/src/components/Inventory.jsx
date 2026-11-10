@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 // Base URL for the inventory service.
-const API_URL = "http://localhost:4000";
+const API_URL = import.meta.env.VITE_API_URL;
 
 /**
  * Fetches and displays the authenticated user's inventory.
