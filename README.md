@@ -71,11 +71,13 @@ authorization header.
 
 ### Web dashboard
 
-1. In `web/`, install dependencies with `npm install`.
-2. Start the Vite development server with `npm run dev`. By default, the
+1. Create web/.env containing VITE_API_URL=http://localhost:4000.
+2. In `web/`, install dependencies with `npm install`.
+3. Start the Vite development server with `npm run dev`. By default, the
    dashboard is served at `http://localhost:5173`.
-3. Use `npm run lint` and `npm run build` in `web/` to lint and build the
+4. Use `npm run lint` and `npm run build` in `web/` to lint and build the
    frontend.
+5. Sign in with a registered MediTrack account.
 
 # Development Progress Log
 Phase  | Scope                                     | Status       | Key Learning
