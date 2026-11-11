@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import AddStockForm from  "./AddStockForm.jsx";
+import AddStockForm from "./AddStockForm.jsx";
 
 
 // Base URL for the inventory service.
@@ -21,26 +21,32 @@ function Inventory({ user }) {
 
     const loadStock = useCallback(async () => {
         const generation = ++loadGeneration.current; // Increment the generation for this load
-        
+
+
         try {
             // Include the user's ID token to authorize the stock request.
             const token = await user.getIdToken();
-            setLoading(true);
-            setError(null);
+
+            if (loadGeneration.current === generation) {
+                // If a newer load request has been initiated, abort this one.
+                setLoading(true);
+                setError(null);
+            }
+
             const response = await fetch(`${API_URL}/stock`, {
-                headers: { Authorization: `Bearer ${token}`}
+                headers: { Authorization: `Bearer ${token}` }
             });
 
-            if(!response.ok) {
+            if (!response.ok) {
                 throw new Error(`Request failed with status ${response.status}`);
             }
 
             const data = await response.json();
-            
+
             if (loadGeneration.current === generation) { // Only update state if this is the latest load
                 setStock(data);
             }
-    
+
         } catch (loadError) {
             console.error("Failed to load inventory:", loadError);
             if (loadGeneration.current === generation) { // Only update state if this is the latest load
@@ -54,20 +60,15 @@ function Inventory({ user }) {
     }, [user]);
 
     useEffect(() => {
-        let active = true;
-        Promise.resolve().then(() => {
-            if (active) {
-                loadStock();
-            }
-        });
+        // set-state-in-effect: all state updates in loadStock occur after await.
+        // (async transitions), guarded by the generation counter. The rule cannot
+        // trace through the awaits and reports a false positive here.
+        // eslint-disable-next-line react-hooks/set-state-in-effect 
+        loadStock();
+    }, [loadStock]);
 
-        return () => {
-            active = false;
-        };
-    }, [loadStock, user]);
 
- 
-    
+
     // Show each inventory item with its quantity, price, and expiry date.
     return (
         <>
@@ -76,25 +77,25 @@ function Inventory({ user }) {
             {!loading && stock.length === 0 && !error && <p>No stock items found. Add some below.</p>}
             <AddStockForm user={user} onCreated={loadStock} />
             <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Quantity</th>
-                    <th>Selling Price (GH₵)</th>
-                    <th>Expiry Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                {stock.map((item) => (
-                    <tr key={item.id}>
-                        <td>{item.name}</td>
-                        <td>{item.quantity}</td>
-                        <td>{typeof item.sellingPrice === "number" ? item.sellingPrice.toFixed(2) : item.sellingPrice}</td>
-                        <td>{item.expiryDate ? new Date(item.expiryDate).toLocaleDateString() : ""}</td>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Selling Price (GH₵)</th>
+                        <th>Expiry Date</th>
                     </tr>
-                ))}
-            </tbody>
-            </table>  
+                </thead>
+                <tbody>
+                    {stock.map((item) => (
+                        <tr key={item.id}>
+                            <td>{item.name}</td>
+                            <td>{item.quantity}</td>
+                            <td>{typeof item.sellingPrice === "number" ? item.sellingPrice.toFixed(2) : item.sellingPrice}</td>
+                            <td>{item.expiryDate ? new Date(item.expiryDate).toLocaleDateString() : ""}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </>
     );
 }
