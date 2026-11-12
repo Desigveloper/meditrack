@@ -7,7 +7,8 @@ function daysUntil(dateString) {
     const expiry = new Date(year, month - 1, day);
 
     const now = new Date();
-    const today = new Date(now.getFullYear, now.getMonth(), now.getDate());
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
 
     const MS_PER_DAY = 24 * 60 * 60 * 1000;
     return Math.round((expiry - today) / MS_PER_DAY);
@@ -18,7 +19,7 @@ export function getAlerts(item) {
     const days = daysUntil(item.expiryDate);
 
     if (days < 0) {
-        alerts.push("Expired");
+        alerts.push("expired");
     } else if (days <= EXPIRY_WARNING_DAYS) {
         alerts.push("expiring soon");
     }
