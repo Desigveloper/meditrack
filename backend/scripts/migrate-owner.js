@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { db } from "../db.js";
+import { db } from "../src/config/firebase.js";
 
 // Set OWNER_UID to the correct user ID from your authentication system 
 // (e.g., Firebase Auth UID or your user management dashboard)

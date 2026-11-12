@@ -1,25 +1,19 @@
-import "dotenv/config";
 import express from "express";
-import { db }from "./db.js";
-import { requireAuth } from "./middleware/auth.js";
+import { db, firebaseApp } from "../config/firebase.js";
+import { requireAuth } from "../middleware/auth.js";
 import { getAuth } from "firebase-admin/auth";
-import { firebaseApp } from "./db.js";
-import {validateStockItem} from "./validators/stock.js";
-import cors from "cors";
+import { validateStockItem } from "../validators/stock.js";
 
 
 /**
  * MediTrack inventory API.
- * Provides a public health check and authenticated stock management endpoints.
+ * Provides registration and authenticated stock management endpoints.
  * Requires the database and authentication configuration supplied by the project.
  */
-const app = express();
-app.use(express.json());
-app.use(cors({origin: "http://localhost:5173"})); // Allow requests from the frontend
-
+const router = express.Router();
 const auth = getAuth(firebaseApp);
 
-app.use("/stock", requireAuth);
+router.use("/stock", requireAuth);
 
 /**
  * Register a new user.
@@ -28,7 +22,7 @@ app.use("/stock", requireAuth);
  *   - uid: The unique user ID assigned by Firebase.
  *   - email: The registered email address.
 */
-app.post("/auth/register", async(request, response) => {
+router.post("/auth/register", async(request, response) => {
     const {email, password, displayName} = request.body;
     if(!email || !password) {
         return response.status(400).json({error: "email and password are required"});
@@ -64,7 +58,7 @@ app.post("/auth/register", async(request, response) => {
  *   - id: The unique identifier of the created stock item.
  *   - name, quantity, costPrice, sellingPrice, ownerId, updatedAt: All fields of the created item.
  */
-app.post("/stock", async (request, response) => {
+router.post("/stock", async (request, response) => {
     const item = request.body;
     delete item.ownerId; // Prevent changing the ownerId
     const validationError = validateStockItem(item);
@@ -101,7 +95,7 @@ app.post("/stock", async (request, response) => {
  * Returns 404 if the item does not exist, 403 if it belongs to another user,
  * 400 for invalid stock data, or 500 if the update fails.
  */
-app.put("/stock/:id", async (request, response) => {
+router.put("/stock/:id", async (request, response) => {
     const { id } = request.params;
     const updatedData = request.body;
 
@@ -166,7 +160,7 @@ app.put("/stock/:id", async (request, response) => {
  *   }
  * ]
  */
-app.get("/stock", async (request, response) => {
+router.get("/stock", async (request, response) => {
     if (!request.user || !request.user.uid) {
         return response.status(401).json({ error: "Unauthorized: user not authenticated" });
     }
@@ -188,16 +182,4 @@ app.get("/stock", async (request, response) => {
     }
 });
 
-// The PORT environment variable can be set to specify the server's listening port.
-// If not set, the server will default to port 4000.
-const PORT = process.env.PORT || 4000;
-const server = app.listen(PORT);
-
-server.on("listening", () => {
-    console.log(`MediTrack API listening on port ${PORT}`);
-});
-
-server.on("error", (error) => {
-    console.error(`MediTrack API failed to listen on port ${PORT}:`, error);
-    process.exitCode = 1;
-});
+export default router;

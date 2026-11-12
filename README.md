@@ -41,8 +41,9 @@ flowchart LR
 
 ## Project Structure
 
-The current files and a recommended next-step layout are documented in
-[docs/PROJECT_STRUCTURE.md](./docs/PROJECT_STRUCTURE.md).
+The repository layout is documented in
+[docs/PROJECT_STRUCTURE.md](./docs/PROJECT_STRUCTURE.md). API routes are
+described in [docs/api.md](./docs/api.md).
 
 ## Getting Started
 
@@ -62,8 +63,8 @@ JSON value, when it starts. Keep this credential private and do not commit it.
    file. To encode a local `serviceAccountKey.json`, run
    `node scripts/encode-key.js` from `backend/`; the script prints the encoded
    credential, so handle its output as a secret.
-3. Start the API from `backend/` with `node server.js`. It listens on port 4000
-   by default; set `PORT` to use another port.
+3. Start the API from `backend/` with `npm start`. It listens on port 4000 by
+   default; set `PORT` to use another port.
 
 The API currently has no `/health` endpoint. The authenticated `GET /stock` route
 is the available read endpoint and expects a Firebase ID token in a Bearer

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import AddStockForm from "./AddStockForm.jsx";
+import { getAlerts } from "./alerts.js";
 
 
 // Base URL for the inventory service.
@@ -92,6 +93,13 @@ function Inventory({ user }) {
                             <td>{item.quantity}</td>
                             <td>{typeof item.sellingPrice === "number" ? item.sellingPrice.toFixed(2) : item.sellingPrice}</td>
                             <td>{item.expiryDate ? new Date(item.expiryDate).toLocaleDateString() : ""}</td>
+                            <td>
+                                {getAlerts(item).map((alert) => (
+                                    <span key={alert} className={`badge badge-${alert.replace(" ", "-")}`}>
+                                        {alert}
+                                    </span>
+                                ))}
+                            </td>
                         </tr>
                     ))}
                 </tbody>

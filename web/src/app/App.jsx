@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from "./firebase.js";
-import SignIn from "./components/SignIn.jsx";
-import Inventory from "./components/Inventory.jsx";
+import { auth } from "../services/firebase.js";
+import SignIn from "../components/SignIn.jsx";
+import Inventory from "../features/inventory/Inventory.jsx";
 
 function App() {
   const [user, setUser] = useState(false);
