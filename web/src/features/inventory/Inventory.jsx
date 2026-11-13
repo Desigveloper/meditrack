@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import AddStockForm from "./AddStockForm.jsx";
 import { getAlerts } from "./alerts.js";
+import "../../styles/badge.css"
 
 
 // Base URL for the inventory service.
