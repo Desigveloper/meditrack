@@ -1,0 +1,20 @@
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    margin-right: 6px;
+    color: #FFFFFF;
+}
+
+.badge-expired {
+    background-color: #b91c1c;
+}
+
+.badge-expiring-soon {
+    background-color: #d97706;
+}
+
+.badge-low-stock {
+    background-color: #2563eb;
+}
