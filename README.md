@@ -21,13 +21,13 @@ MediTrack addresses all three with a simple inventory model, proactive alerts, a
 - REST API with Firebase authentication, per-user inventory isolation, and business-rule validation
 
 ## Tech Stack
- Layer              | Technology                        | Purpose
-- Frontend (web)    | React, JavaScript                 | Pharmacy dashboard UI
-- Frontend (mobile) | React Native                      | Mobile stock management app
-- Backend           | Node.js/Express API               | REST API for stock and users
-- Authentication    | Firebase Authentication           | Sign-in and identity for staff and patients
-- Database          | Google Firestore                  | NoSQL document storage of stock records
-- AI                | Python Microservices, LLM API     | Symptom guidance and stock insights
+ Layer              | Technology                      | Purpose
+- Authentication    | Firebase Authentication         | Sign-in and identity for staff and patients
+- Backend           | Node.js/Express API             | REST API for stock and users
+- Database          | Google Firestore                | NoSQL document storage of stock records
+- Frontend (web)    | React, Vite, JavaScript         | Pharmacy dashboard UI
+- AI                | Python Microservices, LLM API   | Symptom guidance and stock insights
+- Frontend (mobile) | React Native                    | Mobile stock management app
 
 ## Architecture
 flowchart LR
@@ -44,6 +44,14 @@ flowchart LR
 The repository layout is documented in
 [docs/PROJECT_STRUCTURE.md](./docs/PROJECT_STRUCTURE.md). API routes are
 described in [docs/api.md](./docs/api.md).
+Overview:
+meditrack/
+├── README.md          # Project documentation (this file)
+├── docs/              # PROJECT_STRUCTURE.md, api.md
+├── backend/           # Node.js/Express API application (Phase 2)
+├── web/               # React web dashboard (Phase 3)
+├── ai/                # Reserved for the future AI service (Phase 4)
+└── mobile/            # Reserved for the future mobile application (Phase 5)
 
 ## Getting Started
 
@@ -81,33 +89,37 @@ authorization header.
 5. Sign in with a registered MediTrack account.
 
 # Development Progress Log
-Phase  | Scope                                     | Status       | Key Learning
+Phase  | Scope                                     | Status      | Key Learning
 __________________________________________________________________________________________________
-1.     | Repository setup and documentation        | Complete     | Git, commits, README
+1.     | Repository setup and documentation        | Complete    | Git, commits, README,
+       |                                           |             | Git branch workflow  
 __________________________________________________________________________________________________
-2.     | Node.js/Express backend API with          |              | Express routing,     
-       | Firebase Authentication                   | Complete     | request/response 
-       |                                           |              | cycle, status codes,
-       |                                           |              | Firestore persistence,
-       |                                           |              | async/await, ES modules,
-       |                                           |              | secret management via 
-       |                                           |              | environment variable,
-       |                                           |              | Firebase Authentication,
-       |                                           |              | ID Token verification 
-       |                                           |              | middleware, user registration,
-       |                                           |              | user registration, ownership
-       |                                           |              | ownership-based authorization,
-       |                                           |              | schema migration, route 
-       |                                           |              | parameters, status codes
-       |                                           |              | 401/403/400/500/404/409,
-       |                                           |              | validation modules & separation
-       |                                           |              | of concerns
+2.     | Node.js/Express backend API with          |             | Express routing,     
+       | Firebase Authentication                   | Complete    | request/response 
+       |                                           |             | cycle, status codes,
+       |                                           |             | Firestore persistence,
+       |                                           |             | async/await, ES modules,
+       |                                           |             | secret management via 
+       |                                           |             | environment variable,
+       |                                           |             | Firebase Authentication,
+       |                                           |             | ID Token verification 
+       |                                           |             | middleware, user registration,
+       |                                           |             | user registration, ownership
+       |                                           |             | ownership-based authorization,
+       |                                           |             | schema migration, route 
+       |                                           |             | parameters, status codes
+       |                                           |             | 401/403/400/500/404/409,
+       |                                           |             | validation modules & separation
+       |                                           |             | of concerns
 ___________________________________________________________________________________________________
-3.     | React web dashboard                       | In progress  | Vite Scaffolding, components,
-       |                                           |              | JSX, useState, controlled input,
-       |                                           |              | props, useEffect & subscription,
-       |                                           |              | Firebase session persistence, 
-       |                                           |              | git branch workflow, 
+3.     | React web dashboard                       | Complete    | Vite Scaffolding, components,
+       |                                           |             | JSX, useState, controlled inputs,
+       |                                           |             | props, useEffect & subscriptions,
+       |                                           |             | Firebase session persistence, 
+       |                                           |             | fetch API, CORS,frontend
+       |                                           |             | environment config, derived
+       |                                           |             | state, useRef & useCallback,
+       |                                           |             | expiry & low-stock alerts
 ___________________________________________________________________________________________________
 4.     | Python AI guidance microservices          | Planned      |
 ____________________________________________________________________________________________________
